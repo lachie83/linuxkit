@@ -4,14 +4,10 @@ from "alpine:edge"
 
 def install_node_dependencies
   kube_release_artefacts = "https://dl.k8s.io/#{@versions[:kubernetes]}/bin/linux/amd64"
+  helm_release_artefacts = "https://storage.googleapis.com/kubernetes-helm/helm-#{@versions[:helm]}-linux-amd64.tar.gz"
   cni_release_artefacts = "https://dl.k8s.io/network-plugins/cni-amd64-#{@versions[:cni]}.tar.gz"
-  weave_launcher = "https://cloud.weave.works/k8s/v1.6/net?v=#{@versions[:weave]}"
 
   download_files = [
-    '/etc/weave.yaml' => {
-      url: weave_launcher,
-      mode: '0644',
-    },
     '/tmp/cni.tgz' => {
       url: cni_release_artefacts,
       mode: '0644',
@@ -28,6 +24,10 @@ def install_node_dependencies
       url: "#{kube_release_artefacts}/kubectl",
       mode: '0755',
     },
+    '/tmp/helm.tgz' => {
+      url: helm_release_artefacts,
+      mode: '0644',
+    },
   ]
 
   download_files.each do |file|
@@ -38,6 +38,8 @@ def install_node_dependencies
   end
 
   run "mkdir -p /opt/cni/bin /etc/cni/net.d && tar xzf /tmp/cni.tgz -C /opt/cni && rm -f /tmp/cni.tgz"
+  run "tar xzf /tmp/helm.tgz && mv linux-amd64/helm /usr/bin && rm -rf /tmp/helm.tgz linux-amd64"
+
 end
 
 def kubelet_cmd
@@ -66,7 +68,7 @@ wait_for_node_metadata_or_sleep_until_master_init = "[ ! -e /dev/sr0 ] && sleep 
 
 create_shell_wrapper "#{mount_cni_dirs.join(' && ')} && until #{kubelet_cmd.join(' ')} ; do #{wait_for_node_metadata_or_sleep_until_master_init} ; done", '/usr/bin/kubelet.sh'
 
-create_shell_wrapper "kubeadm init --skip-preflight-checks --kubernetes-version #{@versions[:kubernetes]} && kubectl create -n kube-system -f /etc/weave.yaml", '/usr/bin/kubeadm-init.sh'
+create_shell_wrapper "kubeadm init --skip-preflight-checks --kubernetes-version #{@versions[:kubernetes]}", '/usr/bin/kubeadm-init.sh'
 
 flatten
 

@@ -30,7 +30,7 @@ onboot:
      - CAP_SYS_ADMIN
      - CAP_MKNOD
   - name: mounts
-    image: "linuxkit/kubernetes:latest-mounts"
+    image: "lachlanevenson/linuxkit-kubernetes:latest-mounts"
     capabilities:
      - all
     pid: host
@@ -91,15 +91,15 @@ services:
      - /opt/cni:/opt/cni:rshared,rbind
     rootfsPropagation: shared
   - name: kubernetes-image-cache-common
-    image: "linuxkit/kubernetes:latest-image-cache-common"
+    image: "lachlanevenson/linuxkit-kubernetes:latest-image-cache-common"
     binds:
       - /var/run:/var/run
   - name: kubernetes-image-cache-control-plane
-    image: "linuxkit/kubernetes:latest-image-cache-control-plane"
+    image: "lachlanevenson/linuxkit-kubernetes:latest-image-cache-control-plane"
     binds:
       - /var/run:/var/run
   - name: kubelet
-    image: "linuxkit/kubernetes:latest"
+    image: "lachlanevenson/linuxkit-kubernetes:latest"
     capabilities:
      - all
     net: host
@@ -116,7 +116,7 @@ services:
     rootfsPropagation: shared
 files:
   - path: root/.ssh/authorized_keys
-    contents: '# Your ssh key goes here'
+    contents: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDD8IXZRzkxOYwQyVESbd6phXJByFvjfUDPFVyZTojbRSYBwzMxvaTFB2yHho2Ad64RK+mFULvlfo4ylPUWod9RMELxWfCEswJwyA92UO77Isql6C+QMmsnV2NPS5f2IQlwmV4BBSwLsoe7zBAqH57bczjViZRPk9V+srYw9Kifsec//IH2ytG6jGzNjSAGn/UobT1jZV6//Zuz0oRNkp5RlNhFyl9fnHUxqvK+XukkeOY/oaLaHGkEUrgYDFZXCUjPwgSUV2DWr7iO7+KFg0MOEGJ8q8Err1oBJ4wEWopL3iYfSMmRWiRnQxmIKqaa4o+1cLMLncGQxII+bPuR+h8GuyRbZQhOXZfd7MdE9upCZw+eWaH8uT2qO2frkcMZCI7YiMfEn7Pwg85mRsOZZcBdVVr58GgX5v2hYR3ZMHoGfH9NodqSqVUEcMXwlNjWTRJZQzlH7FqZ9l//Oh2Stm/BysYZgjOgTjQF8HORbxLmY++/Z8bRgLJMNbirsBQtNujpbw/YK4XFIdvlNZgn0hk1Y0GyY73/zmF0UQ56N3ZUhFq/AkIgOi50iyhZc/BA0vVtDCExEPAE+tWf8xFizELP2Jcz5CsBQ8tu8ooM5QAJVHEpTqrAN6Jpn3FFn2OymTb8RHOlui20C3XVDADYrHJUYKgUTzKlhl7qxTk5QKDoOQ== lachlan.evenson@microsoft.com'
   - {path: etc/cni, directory: true}
   - {path: opt/cni, directory: true}
 outputs:
