@@ -1,7 +1,7 @@
 @image_name = "lachlanevenson/linuxkit-kubernetes"
 
 @versions = {
-  kubernetes: 'v1.6.2',
+  kubernetes: 'v1.6.3',
   helm: 'v2.4.1',
   cni: '0799f5732f2a11b329d9e3d51b9c8f2e3759f2ff',
 }
