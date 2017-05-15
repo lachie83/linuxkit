@@ -89,6 +89,7 @@ services:
      - /var/lib/kubeadm:/etc/kubernetes
      - /etc/cni:/etc/cni:rshared,rbind
      - /opt/cni:/opt/cni:rshared,rbind
+     - /tmp/etc/resolv.conf:/etc/resolv.conf
     rootfsPropagation: shared
   - name: kubernetes-image-cache-common
     image: "linuxkit/kubernetes:latest-image-cache-common"
@@ -109,6 +110,7 @@ services:
      - /var/lib/kubeadm:/etc/kubernetes
      - /etc/cni:/rootfs/etc/cni:rshared,rbind
      - /opt/cni:/rootfs/opt/cni:rshared,rbind
+     - /tmp/etc/resolv.conf:/etc/resolv.conf
     rootfsPropagation: shared
 files:
   - path: root/.ssh/authorized_keys
