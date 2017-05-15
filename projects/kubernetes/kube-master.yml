@@ -89,6 +89,7 @@ services:
      - /var/lib/kubeadm:/etc/kubernetes
      - /etc/cni:/etc/cni:rshared,rbind
      - /opt/cni:/opt/cni:rshared,rbind
+     - /tmp/etc/resolv.conf:/etc/resolv.conf
     rootfsPropagation: shared
   - name: kubernetes-image-cache-common
     image: "lachlanevenson/linuxkit-kubernetes:latest-image-cache-common"
@@ -98,6 +99,7 @@ services:
     image: "lachlanevenson/linuxkit-kubernetes:latest-image-cache-control-plane"
     binds:
       - /var/run:/var/run
+      - /tmp/etc/resolv.conf:/etc/resolv.conf
   - name: kubelet
     image: "lachlanevenson/linuxkit-kubernetes:latest"
     capabilities:
@@ -113,6 +115,7 @@ services:
      - /var/lib/kubeadm:/etc/kubernetes
      - /etc/cni:/rootfs/etc/cni:rshared,rbind
      - /opt/cni:/rootfs/opt/cni:rshared,rbind
+     - /tmp/etc/resolv.conf:/etc/resolv.conf
     rootfsPropagation: shared
 files:
   - path: root/.ssh/authorized_keys
